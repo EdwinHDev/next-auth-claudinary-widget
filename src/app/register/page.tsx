@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { CldUploadButton, CldImage } from "next-cloudinary";
 import { FaUserPlus, FaFileImage, FaUserCircle, FaExclamationCircle } from "react-icons/fa";
+import { ImSpinner } from "react-icons/im";
 import axios, { AxiosError } from "axios";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -11,6 +12,7 @@ function RegisterPage() {
 
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState({
     error: false,
     message: ""
@@ -23,11 +25,12 @@ function RegisterPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
 
     try {
-      const signupResponse = await axios.post("/api/auth/signup", {
+      await axios.post("/api/auth/signup", {
         email: formData.get("email"),
         password: formData.get("password"),
         fullname: formData.get("fullname"),
@@ -44,6 +47,7 @@ function RegisterPage() {
 
     } catch (error) {
       console.log(error);
+      setLoading(false);
       if (error instanceof AxiosError) {
         setError({
           error: true,
@@ -118,13 +122,25 @@ function RegisterPage() {
           className="bg-zinc-800 px-4 py-2 block mb-6 w-full"
         />
         <div className="flex justify-center">
-          <button
-            className="bg-indigo-500 px-4 py-2 flex gap-2 items-center"
-            type="submit"
-          >
-            <FaUserPlus style={{ fontSize: "20px" }} />
-            Registrar
-          </button>
+          {
+            loading ? (
+              <button
+                className="bg-indigo-500 px-4 py-2 flex gap-2 items-center"
+                type="submit"
+              >
+                <ImSpinner className="text-xl animate-spin" />
+                Registrando...
+              </button>
+            ) : (
+              <button
+                className="bg-indigo-500 px-4 py-2 flex gap-2 items-center"
+                type="submit"
+              >
+                <FaUserPlus style={{ fontSize: "20px" }} />
+                Registrar
+              </button>
+            )
+          }
         </div>
       </form>
     </div>

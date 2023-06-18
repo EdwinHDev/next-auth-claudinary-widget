@@ -3,13 +3,14 @@
 import { FormEvent, useState } from "react";
 import { FaExclamationCircle } from "react-icons/fa";
 import { LuLogIn } from "react-icons/lu";
+import { ImSpinner } from "react-icons/im";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 function LoginPage() {
 
   const router = useRouter();
-
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState({
     error: false,
     message: ""
@@ -17,6 +18,7 @@ function LoginPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData(e.currentTarget);
 
@@ -26,12 +28,15 @@ function LoginPage() {
       redirect: false,
     });
 
-    if(res?.error) return setError({
-      error: true,
-      message: res.error
-    });
+    if (res?.error) {
+      setLoading(false);
+      setError({
+        error: true,
+        message: res.error
+      });
+    }
 
-    if(res?.ok) return router.push("/dashboard/profile");
+    if (res?.ok) return router.push("/dashboard/profile");
   };
 
   return (
@@ -66,13 +71,25 @@ function LoginPage() {
           className="bg-zinc-800 px-4 py-2 block mb-6 w-full"
         />
         <div className="flex justify-end">
-          <button
-            className="bg-indigo-500 px-4 py-2 flex gap-2 items-center"
-            type="submit"
-          >
-            Entrar
-            <LuLogIn style={{ fontSize: "20px" }} />
-          </button>
+          {
+            loading ? (
+              <button
+                className="bg-indigo-500 px-4 py-2 flex gap-2 items-center"
+                type="submit"
+              >
+                <ImSpinner className="text-xl animate-spin" />
+                Entrando...
+              </button>
+            ) : (
+              <button
+                className="bg-indigo-500 px-4 py-2 flex gap-2 items-center"
+                type="submit"
+              >
+                Entrar
+                <LuLogIn style={{ fontSize: "20px" }} />
+              </button>
+            )
+          }
         </div>
       </form>
     </div>
