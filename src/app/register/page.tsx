@@ -92,14 +92,15 @@ function RegisterPage() {
             </div>
           )}
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center mb-4">
           <CldUploadButton
             uploadPreset="ufixm4jb"
             onUpload={onUpload}
-            className="bg-indigo-500 px-4 py-2 flex gap-2 items-center mb-4"
           >
-            <FaFileImage />
-            Cargar imagen
+            <div className="bg-indigo-500 px-4 py-2 flex gap-2 items-center">
+              <FaFileImage />
+              Cargar imagen
+            </div>
           </CldUploadButton>
         </div>
         <input
