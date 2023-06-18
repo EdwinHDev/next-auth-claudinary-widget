@@ -1,9 +1,11 @@
+"use client"
+
 import Link from 'next/link';
-import { getServerSession } from 'next-auth';
+import { useSession } from 'next-auth/react';
 
 async function Navbar() {
 
-  const session = await getServerSession();
+  const { data: session, status } = useSession();
 
   return (
     <nav className='bg-zinc-900 p-4'>
@@ -14,7 +16,7 @@ async function Navbar() {
         <ul className='flex gap-x-2'>
           <li className='px-3 py-1'><Link href="/about">Nosotros</Link></li>
           {
-            session !== null ? (
+            status === "authenticated" ? (
               <li className='px-3 py-1'><Link href="/dashboard/profile">Perfil</Link></li>
             ) : (
               <>
