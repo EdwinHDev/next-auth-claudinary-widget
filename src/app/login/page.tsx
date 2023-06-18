@@ -32,8 +32,6 @@ function LoginPage() {
     });
 
     if(res?.ok) return router.push("/dashboard/profile");
-
-    console.log(res);
   };
 
   return (

@@ -14,7 +14,7 @@ async function Navbar() {
         <ul className='flex gap-x-2'>
           <li className='px-3 py-1'><Link href="/about">Nosotros</Link></li>
           {
-            session ? (
+            session !== null ? (
               <li className='px-3 py-1'><Link href="/dashboard/profile">Perfil</Link></li>
             ) : (
               <>

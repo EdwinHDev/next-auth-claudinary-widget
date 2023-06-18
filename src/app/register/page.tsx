@@ -34,8 +34,6 @@ function RegisterPage() {
         image: urlImage,
       });
 
-      console.log(signupResponse);
-
       const res = await signIn("credentials", {
         email: formData.get("email"),
         password: formData.get("password"),
@@ -43,8 +41,6 @@ function RegisterPage() {
       });
 
       if (res?.ok) return router.push("/dashboard/profile");
-
-      console.log(res);
 
     } catch (error) {
       console.log(error);
