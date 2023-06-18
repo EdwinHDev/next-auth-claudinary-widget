@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
-async function Navbar() {
+function Navbar() {
 
   const { data: session, status } = useSession();
 
