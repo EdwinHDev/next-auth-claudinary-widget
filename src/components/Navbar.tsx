@@ -17,7 +17,14 @@ function Navbar() {
           <li className='px-3 py-1'><Link href="/about">Nosotros</Link></li>
           {
             status === "authenticated" ? (
-              <li className='px-3 py-1'><Link href="/dashboard/profile">Perfil</Link></li>
+              <>
+                <li className='px-3 py-1'><Link href="/dashboard/profile">Perfil</Link></li>
+                {
+                  session.user.role === "admin" && (
+                    <li className='px-3 py-1'><Link href="/dashboard/admin">Administración</Link></li>
+                  )
+                }
+              </>
             ) : (
               <>
                 <li className='px-3 py-1'><Link href="/login">Login</Link></li>

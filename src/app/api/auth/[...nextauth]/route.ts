@@ -3,9 +3,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { mongodb } from "@/libs";
 import { User } from "@/models";
 import bcrypt from "bcryptjs";
-import { IUser } from '../../../../interfaces/user';
 
 declare module "next-auth" {
+
   interface Session {
     user: {
       email: string;
@@ -14,6 +14,32 @@ declare module "next-auth" {
       role: string;
     }
   }
+
+}
+
+declare module "next-auth/jwt" {
+
+  interface JWT {
+    role: string;
+    user: {
+      email: string;
+      fullname: string;
+      image: string;
+      role: string;
+    }
+  }
+
+}
+
+declare module "next-auth" {
+
+  interface User {
+    email: string;
+    fullname: string;
+    image: string;
+    role: string;
+  }
+
 }
 
 const handler = NextAuth({
@@ -50,11 +76,11 @@ const handler = NextAuth({
   ],
 
   callbacks: {
-    jwt({ account, token, user, profile, session }) {
+    async jwt({ account, token, user, profile, session }) {
       if(user) token.user = user;
       return token;
     },
-    session({ session, token }) {
+    async session({ session, token }) {
       session.user = token.user as { email: string, fullname: string, image: string, role: string }
       return session;
     }
