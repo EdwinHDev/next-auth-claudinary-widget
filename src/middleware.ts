@@ -14,9 +14,9 @@ export default withAuth(
 
       if(user.role !== "admin") {
         return NextResponse.rewrite(new URL('/', req.url));
+      } else {
+        return NextResponse.rewrite(new URL('/dashboard/admin', req.url));
       }
-    } else {
-      return NextResponse.rewrite(new URL('/dashboard', req.url));
     }
   },
   { // TODO: Intentar quitar el callbacks y usar solo middleware...
