@@ -12,10 +12,11 @@ export default withAuth(
 
     if(req.nextUrl.pathname.startsWith('/dashboard/admin')) {
 
-      if(user.role !== "admin") {
-        return NextResponse.rewrite(new URL('/', req.url));
-      } else {
+      if(user.role === "admin") {
         return NextResponse.rewrite(new URL('/dashboard/admin', req.url));
+      } else {
+        return NextResponse.redirect(new URL('/', req.url));
+        
       }
     }
   },
